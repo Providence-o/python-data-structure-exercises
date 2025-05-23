@@ -40,7 +40,7 @@ description = 'This program knows the frequencies of various FM radio stations i
 
 # 1. Describe the expected command line argument using argparse
 parser = argparse.ArgumentParser(description=description)
-parser.add_argument("radio_station", type=str, help="Gets frequency for radio station")
+parser.add_argument("radio_station", type=str, nargs="?", help="Gets frequency for radio station")
 args = parser.parse_args() 
 
 # 2. Write function to extract data from dict
@@ -54,8 +54,16 @@ def get_frequency():
         stations = '\n'.join(list)
         return f"I don't know the frequency of {args.radio_station}, but here is a list of the {len(fm_frequencies)} stations I know about: \n \n{stations}"
         
-output = get_frequency()
-print(output)
+if not args.radio_station:
+    # print table showing radio stations and their frequencies
+    print("Station\t\tFrequency")
+    print("------------------------")
+    for key, value in fm_frequencies.items():
+        print(f"{value:<16}{key}")
+
+else:
+    output = get_frequency()
+    print(output)
 
 # TODO (extra):
 # * Change the program so that if the radio station is not found, the user is
