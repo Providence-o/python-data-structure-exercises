@@ -42,13 +42,16 @@ parser = argparse.ArgumentParser(description=description)
 parser.add_argument("radio_station", type=str, help="Gets frequency for radio station")
 args = parser.parse_args() 
 
-# 2. Write code to extract data from dict
-result = [key for key, value in fm_frequencies.items() if value == args.radio_station]
-
-if result:
-    print(f"You can listen to {args.radio_station} on {''.join(result)}")
-else:
-    print(f"I don't know the frequency of {args.radio_station}")
+# 2. Write function to extract data from dict
+def get_frequency():
+    for key, value in fm_frequencies.items():
+        if value == args.radio_station:
+            return f"You can listen to {args.radio_station} on {''.join(key)}"         
+    else:
+        return f"I don't know the frequency of {args.radio_station}"
+        
+output = get_frequency()
+print(output)
 
 # TODO (extra):
 # * Change the program so that if the radio station is not found, the user is
