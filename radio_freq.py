@@ -33,18 +33,19 @@ fm_frequencies = {
 }
 
 description = 'This program knows the frequencies of various FM radio stations in London.'
-'I know about {} FM radio stations'.format(len(fm_frequencies))
 
-# TODO:
-# * Implement the program as described in the comments at the top of the file.
+def main(args):
+    if not args.radio_station:
+        # display table showing radio stations and their frequencies
+        print("Station\t\tFrequency")
+        print("------------------------")
+        for key, value in fm_frequencies.items():
+            print(f"{value:<16}{key}")
 
-# 1. Describe the expected command line argument using argparse
-parser = argparse.ArgumentParser(description=description)
-parser.add_argument("radio_station", type=str, nargs="?", help="Gets frequency for radio station")
-args = parser.parse_args() 
+    else:
+        print(get_frequency(args))
 
-# 2. Write function to extract data from dict
-def get_frequency(): 
+def get_frequency(args): 
     result = [key for key, value in fm_frequencies.items() if value == args.radio_station]
 
     if result:
@@ -53,20 +54,16 @@ def get_frequency():
         list = [v for v in fm_frequencies.values()]
         stations = '\n'.join(list)
         return f"I don't know the frequency of {args.radio_station}, but here is a list of the {len(fm_frequencies)} stations I know about: \n \n{stations}"
-        
-if not args.radio_station:
-    # print table showing radio stations and their frequencies
-    print("Station\t\tFrequency")
-    print("------------------------")
-    for key, value in fm_frequencies.items():
-        print(f"{value:<16}{key}")
+    
+def run():
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument("radio_station", type=str, nargs="?", help="Gets frequency for radio station")
+    args = parser.parse_args()
+   
+    main(args)
 
-else:
-    output = get_frequency()
-    print(output)
 
-# TODO (extra):
-# * Change the program so that if the radio station is not found, the user is
-#   given a list of all stations that the program does know about.
-# * Change the program so that if it is called without arguments, a table of
-#   all radio stations and their frequencies is displayed.
+if __name__ == "__main__":
+    run()
+ 
+
