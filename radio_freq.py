@@ -43,10 +43,11 @@ parser.add_argument("radio_station", type=str, help="Gets frequency for radio st
 args = parser.parse_args() 
 
 # 2. Write function to extract data from dict
-def get_frequency():
-    for key, value in fm_frequencies.items():
-        if value == args.radio_station:
-            return f"You can listen to {args.radio_station} on {''.join(key)}"         
+def get_frequency(): 
+    result = [key for key, value in fm_frequencies.items() if value == args.radio_station]
+
+    if result:
+        return f"You can listen to {args.radio_station} on {''.join(result)}"       
     else:
         return f"I don't know the frequency of {args.radio_station}"
         
