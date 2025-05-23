@@ -15,6 +15,8 @@
 # $ python radio_freq.py "BBC Radio 5"
 # I don't know the frequency of BBC Radio 5
 
+import argparse
+
 fm_frequencies = {
     '89.1 MHz': 'BBC Radio 2',
     '91.3 MHz': 'BBC Radio 3',
@@ -30,10 +32,23 @@ fm_frequencies = {
     '106.2 MHz': 'Heart 106.2',
 }
 
-print('I know about {} FM radio stations'.format(len(fm_frequencies)))
+description = 'I know about {} FM radio stations'.format(len(fm_frequencies))
 
 # TODO:
 # * Implement the program as described in the comments at the top of the file.
+
+# 1. Describe the expected command line argument using argparse
+parser = argparse.ArgumentParser(description=description)
+parser.add_argument("radio_station", type=str, help="Gets frequency for radio station")
+args = parser.parse_args() 
+
+# 2. Write code to extract data from dict
+for key, value in fm_frequencies.items():
+    if value == args.radio_station:
+        print(f"You can listen to {args.radio_station} on {key}") 
+        break
+else:
+    print(f"I don't know the frequency of {args.radio_station}")
 
 # TODO (extra):
 # * Change the program so that if the radio station is not found, the user is
