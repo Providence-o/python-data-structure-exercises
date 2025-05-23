@@ -36,8 +36,10 @@ description = 'This program knows the frequencies of various FM radio stations i
 
 def main(args):
     if not args.radio_station:
+        print("""Warning: No radio station specified in command. Run the program with a station from the below table.
+            \nNote: Station names are case sensitive""")
         # display table showing radio stations and their frequencies
-        print("Station\t\tFrequency")
+        print("\nStation\t\tFrequency")
         print("------------------------")
         for key, value in fm_frequencies.items():
             print(f"{value:<16}{key}")
