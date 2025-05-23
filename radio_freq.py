@@ -32,7 +32,8 @@ fm_frequencies = {
     '106.2 MHz': 'Heart 106.2',
 }
 
-description = 'I know about {} FM radio stations'.format(len(fm_frequencies))
+description = 'This program knows the frequencies of various FM radio stations in London.'
+'I know about {} FM radio stations'.format(len(fm_frequencies))
 
 # TODO:
 # * Implement the program as described in the comments at the top of the file.
@@ -49,7 +50,9 @@ def get_frequency():
     if result:
         return f"You can listen to {args.radio_station} on {''.join(result)}"       
     else:
-        return f"I don't know the frequency of {args.radio_station}"
+        list = [v for v in fm_frequencies.values()]
+        stations = '\n'.join(list)
+        return f"I don't know the frequency of {args.radio_station}, but here is a list of the {len(fm_frequencies)} stations I know about: \n \n{stations}"
         
 output = get_frequency()
 print(output)
