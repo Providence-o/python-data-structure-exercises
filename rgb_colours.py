@@ -23,11 +23,7 @@ colours = [
     ['magenta', 'F0F'],
 ]
 
+def colours_dict():
+    return dict(colours)
 
-# TODO:
-# * Implement the program as described in the comments at the top of the file.
-
-# TODO (extra):
-# * Change the program so that users can also enter an RGB colour code, and be
-#   told the name of the corresponding colour.
-# * Change the program so that it ignores the case of the user's input.
+print(colours_dict())
