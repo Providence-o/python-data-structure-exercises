@@ -15,13 +15,17 @@ def main(colour_args):
     print(get_rgb_code(colour_args))
 
 def get_rgb_code(colour_args):
-
-    result = [rgb_code for colour, rgb_code in colours_dict().items() if colour.lower() == colour_args.lower()]
-
-    if result:
-        return f"The RGB code for {colour_args} is {result[0]}"       
-    else:
+    matched_colour = matching_colour(colour_args)
+    
+    if not matched_colour:
         return f"I don't know the RGB code for {colour_args}"
+    return f"The RGB code for {colour_args} is {matched_colour}"
+    
+def matching_colour(colour_args):
+    result = [rgb_code for colour, rgb_code in colours_dict().items() if colour.lower() == colour_args.lower()]
+    
+    if result:
+        return result[0]
 
 def colours_dict():
     return dict(colours)
