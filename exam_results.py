@@ -41,18 +41,30 @@ def main():
     print('\nYour grades:')        
     print('')
     for subject_name, student_grade in exam_grades.items(): 
-        print(f'{subject_name}: {student_grade}')
+        print(f'{subject_name}: {student_grade}') 
 
 
 def get_marks_for_subject():
     results = {}
+
     for subject in subjects:
-        print(f'What marks did you get in {subject}?')
-        marks = int(input('> '))
-        
+        while True:
+            print(f'\nWhat marks did you get in {subject}?')
+
+            # ensures a valid mark is provided
+            try:
+                marks = int(input('> '))
+                if 0 <= marks <= 100:
+                    break 
+                else:
+                    print('\nPlease enter a valid mark between 0 and 100')
+            except ValueError:
+                print('Please enter a numerical value between 0 an 100')
+            
         # convert marks to grades 
         matching_grade = [grade for grade, grade_range in grade_boundaries.items() if marks in range(grade_range[0], grade_range[1] + 1)]
 
+        # if matching_grade:
         results[subject] = matching_grade[0]
 
     return results
