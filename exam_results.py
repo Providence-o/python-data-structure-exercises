@@ -66,14 +66,12 @@ def get_marks_for_subject():
         # convert marks to grades 
         matching_grade = [grade for grade, grade_range in grade_boundaries.items() if marks in range(grade_range[0], grade_range[1] + 1)]
 
-        # if matching_grade:
+       
         results[student_subject] = matching_grade[0]
 
     return results
 
-def get_student_subject():
-    # check whether student offers all subjects 
-    
+def get_student_subject():   
     while True: # retarts the loop until a vaild answer of yes/no is provided
         print(f'\nHave you taken all the subjects ({", ".join(subjects)})? Please answer "yes/no"')
         response = input('> ').capitalize()
@@ -84,25 +82,24 @@ def get_student_subject():
 
             # get the students subjects 
             subject_list = []
-            print(f'\nList the subjects you take? ({", ".join(subjects)}). Please type "Done" when you have entered all the subjects you take')
-            
-            while len(subject_list) < (len(subjects) - 1):
-                student_subject = input('> ').capitalize()
+            number_of_subjects = int(input('How many subjects did you take? \n> '))
 
-                if student_subject == 'Done':
-                    if subject_list: 
-                        break
+            while len(subjects) > number_of_subjects > 0:
+                print(f'\nList the subjects you take? ({", ".join(subjects)}).')
+                
+                while len(subject_list) < number_of_subjects:
+                    student_subject = input('> ').capitalize()
+
+                    if student_subject not in subject_list and student_subject in subjects:
+                        subject_list.append(student_subject)
+
                     else:
-                        print('You have not entered any subject')
-
-                if student_subject not in subject_list and student_subject in subjects:
-                    subject_list.append(student_subject)
-
-                else:
-                    print(f'Please enter one of the following subjects: {", ".join(subjects)}')
-            
-            print(f"\nYou've taken {', '.join(subject_list)}")  
-            return subject_list
+                        print(f'Please enter one of the following subjects: {", ".join(subjects)}')
+                
+                print(f"\nYou've taken {', '.join(subject_list)}")  
+                return subject_list
+            else:
+                print(f"If you haven't taken all the subjects your input should be a number less than {len(subjects)}")
             
         else:
             print('Please enter either "yes" or "no"')
