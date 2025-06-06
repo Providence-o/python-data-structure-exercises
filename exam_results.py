@@ -36,9 +36,29 @@ grade_boundaries = {
     'F': [0, 29],
 }
 
-print('This program will ask you your marks in the following subjects:')
-for subject in subjects:
-    print(' * {}'.format(subject))
+def main():
+    exam_grades = get_marks_for_subject()
+    print('\nYour grades:')        
+    print('')
+    for subject_name, student_grade in exam_grades.items(): 
+        print(f'{subject_name}: {student_grade}')
+
+
+def get_marks_for_subject():
+    results = {}
+    for subject in subjects:
+        print(f'What marks did you get in {subject}?')
+        marks = int(input('> '))
+        
+        # convert marks to grades 
+        matching_grade = [grade for grade, grade_range in grade_boundaries.items() if marks in range(grade_range[0], grade_range[1] + 1)]
+
+        results[subject] = matching_grade[0]
+
+    return results
+
+if __name__ == "__main__":
+    main()
 
 # TODO:
 # * Implement the program as described in the comments at the top of the file.
