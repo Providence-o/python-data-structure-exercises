@@ -50,17 +50,21 @@ def main(name_args):
 def get_customer_bill(name_args):
     order_profile = get_table_profile()
 
-    matched_name = (customer_name for customer_name in order_profile.keys() if name_args.lower() == customer_name.lower())
+    matched_name = None
+    for customer_name in order_profile.keys():
+        if name_args.lower() == customer_name.lower():
+            matched_name = customer_name
            
-    if matched_name:
-        for _, order_items in order_profile.items():
-            customer_meal = order_items.get("meal")
-        
-            order_total = order_items.get("amount_due")
-            
-        return f"{name_args} should pay {order_total}. They had {customer_meal}"
-    else:
+    if not matched_name:
         return f"{name_args} did not have dinner"
+    
+    for _, order_items in order_profile.items():
+        customer_meal = order_items.get("meal")
+
+        order_total = order_items.get("amount_due")
+        
+    return f"{matched_name} should pay {order_total}. They had {customer_meal}"
+       
 
 def get_table_bill():
     table_bill = get_table_profile()
