@@ -42,24 +42,53 @@ print('There are {} items on the bill'.format(len(bill_items)))
 description = "This program reports how much individuals should pay for their bill at dinner"
 
 def main(name_args):
-    print(get_customer_bill(name_args))
-              
+    if not name_args:
+        print(get_table_bill())
+    else:
+        print(get_customer_bill(name_args))
+
 def get_customer_bill(name_args):
-    customer_profile = get_customer_profile()
+    order_profile = get_table_profile()
 
-    if name_args in customer_profile.keys():
+    matched_name = (customer_name for customer_name in order_profile.keys() if name_args.lower() == customer_name.lower())
            
-        customer_meal = get_customer_meal(customer_profile, name_args)
-        price_list = customer_profile[name_args].get("price")
-
-        total_bill = sum(price_list)
+    if matched_name:
+        for _, order_items in order_profile.items():
+            customer_meal = order_items.get("meal")
+        
+            order_total = order_items.get("amount_due")
             
-        return f"{name_args} should pay {total_bill}. They had {', '.join(customer_meal)}"
+        return f"{name_args} should pay {order_total}. They had {customer_meal}"
     else:
         return f"{name_args} did not have dinner"
 
-def get_customer_meal(profile, key):
-    return profile[key].get("meal")
+def get_table_bill():
+    table_bill = get_table_profile()
+
+    table = ["\nCustomer\tMeal\t\t\t\t\t\t\tTotal"]
+    
+    for customer, order in table_bill.items():
+        meal = order.get("meal")
+        order_total = order.get("amount_due")
+        items = f"{customer:<13}{meal:<60}{order_total}"
+        table.append(items)
+    return "\n".join(table)
+
+
+def get_table_profile():
+    table_profile = get_customer_profile()
+
+    for _, order in table_profile.items():
+        price_list = order.get("price")
+        total_bill = sum(price_list)
+
+        order["amount_due"] = total_bill
+
+        customer_meal = order.get("meal")
+        customer_meal_str = ', '.join(customer_meal)
+        order["meal"] = customer_meal_str
+     
+    return table_profile
 
 def get_customer_profile():
     customer_profile = {}
@@ -81,9 +110,9 @@ def get_customer_profile():
 
 def run():
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument("name_key", type=str, help="Gets bill for customer_profile")
+    parser.add_argument("customer_name", type=str, nargs="?", help="Calculates bill for a given customer")
     args = parser.parse_args()
-    name_args = (args.name_key)
+    name_args = (args.customer_name)
    
     main(name_args)
 
