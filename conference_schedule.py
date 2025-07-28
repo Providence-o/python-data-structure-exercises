@@ -80,10 +80,15 @@ def parser():
 def get_session(room_arg, time_arg):
     DEFAULT_SESSION = ""
 
+    time_to_hour = round_down_time(time_arg)
+
+    if time_to_hour == "13:00":
+        return f"It's break time"
+
     if not CONFERENCE_START <= time_arg < CONFERENCE_END:
         return "Please enter a valid time. Conference runs from 10:00 - 16:00"
-    time_per_hour = round_down_time(time_arg)
-    current_session = SCHEDULE.get(room_arg, {}).get(time_per_hour, DEFAULT_SESSION)
+    
+    current_session = SCHEDULE.get(room_arg, {}).get(time_to_hour, DEFAULT_SESSION)
     if current_session == DEFAULT_SESSION:
         return "Enter a valid room name"
     else:
