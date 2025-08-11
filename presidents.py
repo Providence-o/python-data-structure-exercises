@@ -25,7 +25,6 @@ print('There have been presidents from {} different parties'.format(len(presiden
 flat_presidency = []
 for party, presidents in presidents_by_party.items():
     for person in presidents:
-        # breakpoint()
         flat_presidency.append((party, person["name"], person["born"], person["took_office"], person["left_office"]))
 
 # TODO: sort by dob
@@ -38,13 +37,7 @@ def age_on_given_date(birth_date, given_date):
     age_in_years = (given_date - birth_date).days / 365
     return int(age_in_years)
 
-#   * Who was the youngest Republican president when they took office?
-republican_president = []
-for party, president_name, president_dob, took_office in zip(parties, name, dob, enters_office):
-    if party == "Republican":
-        republican_president.append([president_name, age_on_given_date(president_dob, took_office)])
-
-print(republican_president)
+age_took_office = tuple(age_on_given_date(president_dob, took_office) for president_dob, took_office in zip(dob, enters_office))
 
 
 def max_president_data(column_key):
@@ -73,7 +66,6 @@ def convert_to_took_office_value(column_name, column_info):
     return date_dict
 
 converted_date = convert_to_took_office_value(name, enters_office)
-# print(converted_date)
 
 month_name = [calendar.month_name[date_value.month] for date_value in converted_date.values()] # convert month number to name - human readable
 print(f"\nWhich month saw the most presidents take office? \n The month with the most presidents is {max_president_data(month_name)}")   
@@ -86,5 +78,8 @@ decade = [round_down_years(str(date_value.year)) for date_value in converted_dat
 print(f"\nWhich decade saw the most presidents take office? \n The decade with the most presidents take office is {max_president_data(decade)}")   
 
 
+converted_age = convert_to_took_office_value(name, age_took_office)
+age = [ages for ages in converted_age.values()]
+print(f"\nWho was the oldest president (from any party) when they took office? \n The oldest president to take office is {max(age)}")   
 
 
