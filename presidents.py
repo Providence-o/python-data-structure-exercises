@@ -1,5 +1,5 @@
 import calendar
-from collections import Counter
+from collections import Counter, defaultdict
 
 from presidents_data import presidents_by_party
 
@@ -43,6 +43,8 @@ def duration_in_office(end_date, start_date):
 
 TIME_IN_OFFICE = tuple(duration_in_office(left_date, started_date) for started_date, left_date in zip(ENTERS_OFFICE, LEAVES_OFFICE))
 
+PRESIDENT_ID = tuple(id for id, _ in enumerate(NAME))
+
 def main():
     print(print_report())
 
@@ -85,26 +87,31 @@ def print_report():
 def create_report():
     party_with_most_presidents = max_president_data(PARTIES)
 
-    converted_party_date = convert_tuple_to_dict(NAME, AGE_TOOK_OFFICE, PARTIES)
-    party_name = {name: age for name, (age, party) in converted_party_date.items() if party == 'Republican'}
+    converted_party_date = convert_tuple_to_dict(PRESIDENT_ID, AGE_TOOK_OFFICE, PARTIES)
+    party_name = {NAME[id]: age for id, (age, party) in converted_party_date.items() if party == 'Republican'}
     youngest_republican = min(party_name, key=party_name.get)
 
-    party_demo = {name: age for name, (age, party) in converted_party_date.items() if party == 'Democratic'}
+    party_demo = {NAME[id]: age for id, (age, party) in converted_party_date.items() if party == 'Democratic'}
     oldest_democrat = max(party_demo, key=party_demo.get)
 
-    converted_age = convert_tuple_to_dict(NAME, AGE_TOOK_OFFICE)
-    youngest_president = min(converted_age, key=converted_age.get)
+    converted_age = convert_tuple_to_dict(PRESIDENT_ID, AGE_TOOK_OFFICE)
+    
+    youngest_president_id = min(converted_age, key=converted_age.get) 
+    youngest_president = NAME[youngest_president_id] 
 
-    oldest_president = max(converted_age, key=converted_age.get)
+    oldest_president_id = max(converted_age, key=converted_age.get)
+    oldest_president = NAME[oldest_president_id] 
 
-    converted_date = convert_tuple_to_dict(NAME, ENTERS_OFFICE)
-    month_name = [calendar.month_name[date_value.month] for date_value in converted_date.values()]
+    month_name = [calendar.month_name[date_value.month] for date_value in ENTERS_OFFICE]
     month_with_most_presidents = max_president_data(month_name)
 
-    decade = [round_down_years(str(date_value.year)) for date_value in converted_date.values()]
+    decade = [round_down_years(str(date_value.year)) for date_value in ENTERS_OFFICE]
     decade_with_most_presidents = max_president_data(decade)
 
-    converted_power_date = convert_tuple_to_dict(PARTIES, TIME_IN_OFFICE)
+    converted_power_date = defaultdict(int)
+    for parties, time_in_office in zip(PARTIES, TIME_IN_OFFICE):
+        converted_power_date[parties] += time_in_office
+    
     longest_duration_party = max(converted_power_date, key=converted_power_date.get)
 
     list_age = [age for age in converted_age.values()]
