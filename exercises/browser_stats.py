@@ -5,7 +5,7 @@
 #
 # $ python browser_stats.py
 
-from browser_stats_data import browser_stats_by_year_and_month
+from .data.browser_stats_data import browser_stats_by_year_and_month
 
 # print('browser_stats_by_year_and_month is a {} with {} elements'.format(type(browser_stats_by_year_and_month).__name__, len(browser_stats_by_year_and_month)))
 
